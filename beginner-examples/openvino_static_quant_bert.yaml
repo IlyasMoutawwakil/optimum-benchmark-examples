@@ -1,0 +1,36 @@
+defaults:
+  - backend: openvino
+  - launcher: process
+  - benchmark: inference
+  - experiment # inheriting experiment schema
+  - _self_ # for hydra 1.1 compatibility
+  - override hydra/job_logging: colorlog # colorful logging
+  - override hydra/hydra_logging: colorlog # colorful logging
+
+experiment_name: openvino_static_quant_bert
+
+backend:
+  device: cpu
+  no_weights: true
+  model: bert-base-uncased
+  export: true
+  reshape: true
+  calibration: true
+  quantization: true
+
+benchmark:
+  input_shapes:
+    batch_size: 1
+
+# hydra/cli specific configuration
+hydra:
+  run:
+    # run directory where the logs and results will be stored
+    dir: runs/${experiment_name}
+  job:
+    # change the working directory to the run directory
+    chdir: true
+    env_set:
+      # set the environment variable to override benchmarks
+      # that already have results saved in the results directory
+      OVERRIDE_BENCHMARKS: 1
