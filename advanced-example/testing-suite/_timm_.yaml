@@ -1,0 +1,4 @@
+backend:
+  library: timm
+  model: timm/tiny_vit_21m_224.in1k
+

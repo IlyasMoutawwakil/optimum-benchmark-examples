@@ -1,0 +1,5 @@
+backend:
+  model: gpt2
+  peft_strategy: lora
+  peft_config:
+    task_type: CAUSAL_LM

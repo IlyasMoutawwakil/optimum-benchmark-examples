@@ -1,0 +1,3 @@
+# Testing Suite
+
+This is a fairly complex yet powerful example of how to use the benchmarking framework. It's taken directly from Optimum-Benchmar's testing suite and it demonstrates how we can compose multiple generic configurations into specific ones. This is very similar to OOP, where we can inherit from multiple base classes and override some methods. This way we can add a model, a batch size, a launcher, to a parent configuration and have all the child configurations inherit it automatically.
