@@ -1,0 +1,22 @@
+defaults:
+  - _base_
+  - _self_
+  - override launcher: torchrun
+
+experiment_name: fp16+gptq+exllamav2+dp=2
+
+launcher:
+  nproc_per_node: 2
+
+backend:
+  device_ids: 0,1
+  no_weights: true
+  quantization_scheme: gptq
+  quantization_config:
+    exllama_config:
+      version: 2
+
+hydra:
+  sweeper:
+    params:
+      model: TheBloke/LLaMa-7B-GPTQ,TheBloke/LLaMa-13B-GPTQ,TheBloke/LLaMa-65B-GPTQ

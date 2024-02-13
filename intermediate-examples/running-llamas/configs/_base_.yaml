@@ -1,0 +1,37 @@
+defaults:
+  - backend: pytorch # default backend
+  - launcher: process # default launcher
+  - benchmark: inference # default benchmark
+  - experiment # inheriting from experiment config
+  - _self_ # for hydra 1.1 compatibility
+  - override hydra/job_logging: colorlog # colorful logging
+  - override hydra/hydra_logging: colorlog # colorful logging
+
+experiment_name: llama-experiment
+
+backend:
+  device: cuda
+  device_ids: 0
+  no_weights: true
+  torch_dtype: float16
+
+benchmark:
+  memory: true
+  warmup_runs: 10
+  new_tokens: 512
+  input_shapes:
+    batch_size: 1
+    sequence_length: 256
+
+hydra:
+  run:
+    dir: experiments/${oc.env:HOSTNAME}/${model}/${experiment_name}
+  sweep:
+    dir: experiments/${oc.env:HOSTNAME}/${model}/${experiment_name}
+    subdir: ${benchmark.input_shapes.batch_size}
+  job:
+    chdir: true
+  sweeper:
+    params:
+      benchmark.input_shapes.batch_size: 1,2,4,8,16,32,64,128
+      model: NousResearch/Llama-2-7b-hf,NousResearch/Llama-2-13b-hf

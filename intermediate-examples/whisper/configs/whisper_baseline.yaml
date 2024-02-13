@@ -1,0 +1,28 @@
+defaults:
+  - backend: pytorch # default backend
+  - benchmark: inference # default benchmark
+  - launcher: process # isolated process launcher
+  - experiment # inheriting from experiment config
+  - _self_ # for hydra 1.1 compatibility
+  - override hydra/job_logging: colorlog # colorful logging
+  - override hydra/hydra_logging: colorlog # colorful logging
+
+experiment_name: baseline
+
+backend:
+  device: cpu
+  no_weights: false
+  torch_dtype: float32
+  model: openai/whisper-base
+
+hydra:
+  run:
+    dir: experiments/
+  sweep:
+    dir: experiments/
+  job:
+    chdir: true
+  sweeper:
+    params:
+      benchmark.new_tokens: 10,100
+      benchmark.input_shapes.batch_size: 64,128

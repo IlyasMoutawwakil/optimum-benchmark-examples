@@ -1,0 +1,23 @@
+defaults:
+  - whisper_baseline
+  - _self_
+  - override backend: onnxruntime
+
+experiment_name: auto_opt(${backend.auto_optimization})
+
+backend:
+  use_cache: true
+  no_weights: false
+  use_merged: false
+
+hydra:
+  run:
+    dir: experiments/${experiment_name}
+  sweep:
+    dir: experiments/${experiment_name}
+    subdir: $batch_size(${benchmark.input_shapes.batch_size})_new_tokens(${benchmark.new_tokens}
+  job:
+    chdir: true
+  sweeper:
+    params:
+      backend.auto_optimization: null,O1,O2,O3,O4

@@ -1,0 +1,19 @@
+defaults:
+  - whisper_baseline
+  - _self_
+  - override backend: onnxruntime
+
+experiment_name: whisper_auto_qnt(${backend.auto_quantization})
+
+backend:
+  use_cache: true
+  no_weights: false
+  use_merged: false
+  auto_quantization: null
+  auto_quantization_config:
+    per_channel: false # blocking decoder quantization
+
+hydra:
+  sweeper:
+    params:
+      backend.auto_quantization: null,arm64,avx2,avx512,avx512_vnni
